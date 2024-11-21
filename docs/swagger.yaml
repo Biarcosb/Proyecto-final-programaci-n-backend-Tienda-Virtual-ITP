@@ -1,0 +1,92 @@
+openapi: 3.0.0
+info:
+  title: API de Usuarios
+  version: 1.0.0
+paths:
+  /api/users/register:
+    post:
+      summary: Registrar un nuevo usuario
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                names:
+                  type: string
+                lastNames:
+                  type: string
+                email:
+                  type: string
+                password:
+                  type: string
+      responses:
+        '201':
+          description: Usuario registrado
+        '400':
+          description: Error en la solicitud
+
+  /api/users/login:
+    post:
+      summary: Iniciar sesión de un usuario
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                email:
+                  type: string
+                  example: "user@example.com"
+                password:
+                  type: string
+                  example: "userpassword"
+      responses:
+        '200':
+          description: Inicio de sesión exitoso
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  token:
+                    type: string
+                    description: JWT token generado para el usuario
+        '400':
+          description: Error en la solicitud
+        '401':
+          description: Credenciales inválidas
+
+  /api/users/obtenerUsuario:
+    get:
+      summary: Obtener la información del usuario autenticado
+      security:
+        - bearerAuth: [] 
+      responses:
+        '200':
+          description: Información del usuario obtenida exitosamente
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  id:
+                    type: integer
+                    description: ID del usuario
+                  fullName:
+                    type: string
+                    description: Nombres del usuario
+                  email:
+                    type: string
+                    description: Correo electrónico del usuario
+                  password:
+                    type: string
+                    description: contraseña del usuario
+        '401':
+          description: No autorizado, token inválido o expirado
+        '403':
+          description: Acceso prohibido, el usuario no tiene permisos
+        '404':
+          description: Usuario no encontrado

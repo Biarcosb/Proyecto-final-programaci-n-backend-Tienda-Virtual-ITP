@@ -1,0 +1,4 @@
+@env = dev
+
+DELETE  http://localhost:3001/api/users/profile/5
+Authorization: Bearer {{token}}
